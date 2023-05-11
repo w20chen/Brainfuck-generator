@@ -46,13 +46,13 @@ public:
 
     void copy(var &another);
 
-    var &operator=(var &another);
-
     void move_to(var &another);
 
     void clear();
 
     void set(const uint8_t v);
+
+    var &operator=(var &another);
 
     var &operator=(const uint8_t v);
 
@@ -68,11 +68,11 @@ public:
 
     void is_negative(var &result);
 
-    void greater(var &another, var &result);
-
     var &operator>(var &another);
 
     var &operator>(const uint8_t d);
+
+    void greater(var &another, var &result);
 
     void greater(const uint8_t d, var &result);
 
@@ -148,6 +148,7 @@ public:
 
     var &operator%(const uint8_t d);
 
+    friend class vararray;
 };
 
 void if_end();

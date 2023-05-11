@@ -1,26 +1,25 @@
 #### Brainfuck generator
 
-Describe your Brainfuck program using C++.
+Describe your brainfuck program using C++.
 
 已经实现：
 
 - `while(!x)` 语句
 - `if(condition)` 语句
-- `int8_t` 运算 `+`、`-`、`*`、`/`
-- `int8_t` 大小比较
+- 八位整型运算 `+`、`-`、`*`、`/`
+- 八位整型大小比较
 - 运算符重载
-- 数组 `vararray`，能通过变量访问数组
+- 数组，能通过变量访问数组
 
 Not implemented yet:
-- `(condition).while_begin()`
-- `else_beign()`, `else_end()`
+- (condition).while_begin();
+- else_beign(), else_end();
 
 
 #### How to use
 
 Implement your C++ code in text.cpp, then `bash run.sh` to compile and run.     
-Brainfuck code will generated in `out.bf`.     
-Some examples are shown below.
+Brainfuck code will be generated in `out.bf`.
 
 #### var 类型
 **var 对象在调用构造函数时，会在 BF 机器内存中自动申请空间，且不会从 BF 内存中释放。**     
@@ -229,7 +228,7 @@ L.output();         // [9,8,7,6,5,4,3,2,1,0]
 
 var index;
 index.input_as_integer();       // index starts from 0
-L[index].output_as_integer();
+L.val(index).output_as_integer();
 ```
 
 #### 排序
@@ -259,23 +258,74 @@ Sort with vararray:
 
 ```cpp
 vararray L(10);
+var tmp;
 for (int i = 0; i < 10; i++) {
-    L[i].input_as_integer();
+    tmp.input_as_integer();
+    L.set(i, tmp);
 }
 
 for (int i = 0; i < 10; i++) {
     for (int j = 0; j < 10 - i - 1; j++) {
-        (L[j] > L[j + 1]).if_begin();
-            L[j].swap(L[j + 1]);
+        (L.val(j) > L.val(j + 1)).if_begin();
+        tmp = L.val(j);
+        L.set(j, L.val(j + 1));
+        L.set(j + 1, tmp);
         if_end();
     }
 }
 
-for (int i = 0; i < 10; i++) {
-    L[i].output_as_integer();
-    output(' ');
-}
+L.output();
 ```
 
 input: 100 88 2 34 55 55 23 1 0 87
 output: 0 1 2 23 34 55 55 87 88 100
+
+
+```cpp
+vararray L(32);
+var N, tmp;
+N.input_as_integer();
+
+// input
+
+var i = 0, j = 0;
+var flag1 = 1, flag2 = 1;
+flag1.while_begin();
+    tmp.input_as_integer();
+    L.set(i, tmp);
+    i.increment();
+    (i == N).if_begin();
+        flag1 = 0;
+    if_end();
+flag1.while_end();
+
+L.output();
+
+// sort
+
+i = 0;
+flag1 = 1;
+
+flag1.while_begin();
+    print_str(".");
+    j = 0;
+    flag2 = 1;
+    flag2.while_begin();
+        (L.val(j) > L.val(j + 1)).if_begin();
+            tmp = L.val(j);
+            L.set(j, L.val(j + 1));
+            L.set(j + 1, tmp);
+        if_end();
+        j += 1;
+        (j == N - i - 1).if_begin();
+            flag2 = 0;
+        if_end();
+    flag2.while_end();
+    i += 1;
+    (i == N).if_begin();
+        flag1 = 0;
+    if_end();
+flag1.while_end();
+
+L.output();
+```

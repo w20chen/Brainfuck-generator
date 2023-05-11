@@ -39,5 +39,8 @@ int main(int argc, char **argv) {
     if (remove("tmp.bf") != 0) {
         perror("remove");
     }
+#ifndef __linux__
+    getchar();
+#endif
     return 0;
 }

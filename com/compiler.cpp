@@ -5,8 +5,8 @@
 #include <stack>
 #include <assert.h>
 
-#define MEMSIZE (500000 + 128)
-#define PROG_LEN 500000
+#define MEMSIZE (10000000 + 128)
+#define PROG_LEN 10000000
 
 typedef int8_t dtype;
 
@@ -14,7 +14,7 @@ char program[PROG_LEN];
 
 dtype *data_ptr;
 dtype *mem;
-
+bool DEBUG = false;
 
 dtype input() {
     char ch;
@@ -24,7 +24,7 @@ dtype input() {
     return (dtype)0;
 }
 
-void output(dtype *p) {
+inline void output(dtype *p) {
     printf("%c", *p);
 }
 
@@ -73,6 +73,9 @@ void init() {
 
 void execute(char *str) {
     for (int pc = 0; str[pc]; pc++) {
+        if (DEBUG) {
+            output((dtype *)(str + pc));
+        }
         switch (str[pc]) {
         case '>':
             data_ptr++;
@@ -122,6 +125,10 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    if (argc >= 3 && strcmp(argv[2], "-d") == 0) {
+        DEBUG = true;
+    }
+
     int cnt = -1;
     do {
         assert(cnt + 1 < MEMSIZE);
@@ -135,5 +142,8 @@ int main(int argc, char **argv) {
 
     execute(program);
 
+#ifndef __linux__
+    getchar();
+#endif
     return 0;
 }
