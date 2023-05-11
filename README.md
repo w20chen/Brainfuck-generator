@@ -257,15 +257,15 @@ for (int i = 0; i < 10; i++) {
 Sort with vararray:
 
 ```cpp
-vararray L(10);
+vararray L(6);
 var tmp;
-for (int i = 0; i < 10; i++) {
+for (int i = 0; i < 6; i++) {
     tmp.input_as_integer();
     L.set(i, tmp);
 }
 
-for (int i = 0; i < 10; i++) {
-    for (int j = 0; j < 10 - i - 1; j++) {
+for (int i = 0; i < 6; i++) {
+    for (int j = 0; j < 6 - i - 1; j++) {
         (L.val(j) > L.val(j + 1)).if_begin();
         tmp = L.val(j);
         L.set(j, L.val(j + 1));
@@ -276,10 +276,6 @@ for (int i = 0; i < 10; i++) {
 
 L.output();
 ```
-
-input: 100 88 2 34 55 55 23 1 0 87
-output: 0 1 2 23 34 55 55 87 88 100
-
 
 ```cpp
 vararray L(32);
