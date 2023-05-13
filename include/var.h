@@ -1,6 +1,8 @@
 #ifndef _var
 #define _var
 
+#include "while.h"
+
 #define MEMSIZE 30000
 
 #include <iostream>
@@ -162,5 +164,7 @@ void print_str(const char *str);
 void mem_reset();
 
 void output(char);
+
+void output_as_integer(var);
 
 #endif

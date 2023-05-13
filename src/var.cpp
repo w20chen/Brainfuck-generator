@@ -41,7 +41,14 @@ var::var(int8_t d) {
 
     print_times('>', this->pool_index);
     int outer_increment = data - inner_increment * 8;
-    assert(outer_increment >= 0);
+    if (outer_increment < 0) {
+        // assert(outer_increment >= 0);
+        fprintf(stderr, "data = %d, \
+                inner_increment = %d, \
+                outer_increment %d < 0\n", data, inner_increment, outer_increment);
+        // assert(0);
+    }
+
     print_times('+', outer_increment);
     print_times('<', this->pool_index);
 }
@@ -692,9 +699,12 @@ void var::swap(var &another) {
     cur_var_num--;
 }
 
+std::string optimize_2(const std::string &str);
+
 void optimize(FILE *fin, FILE *fout) {
     assert(fin && fout);
     std::vector<char> S;
+    std::string str;
     char ch = 0;
     while (fscanf(fin, "%c", &ch) == 1 && !feof(fin)) {
         switch (ch) {
@@ -716,15 +726,88 @@ void optimize(FILE *fin, FILE *fout) {
             break;
         default:
             for (auto c : S) {
-                fprintf(fout, "%c", c);
+                str += c;
+                // fprintf(fout, "%c", c);
             }
-            fprintf(fout, "%c", ch);
+            str += ch;
+            // fprintf(fout, "%c", ch);
             S.clear();
         }
     }
+
+    str = optimize_2(str);
+
+    fprintf(fout, "%s", str.c_str());
+
     fclose(fin);
     fclose(fout);
     // discard the '<' and '>' at the end
+}
+
+// delete redundant [-]
+std::string optimize_2(const std::string &str) {
+#define APP ret += c
+    std::string ret;
+    int status = 0;
+    for (char c : str) {
+        switch (status) {
+        case 0:
+            if (c == '[') {
+                status = 1;
+            }
+            APP;
+            break;
+        case 1:
+            if (c == '-') {
+                status = 2;
+            }
+            else {
+                status = 0;
+            }
+            APP;
+            break;
+        case 2:
+            if (c == ']') {
+                status = 3;
+            }
+            else {
+                status = 0;
+            }
+            APP;
+            break;
+        case 3:
+            if (c == '[') {
+                status = 4;
+            }
+            else {
+                status = 0;
+                APP;
+            }
+            break;
+        case 4:
+            if (c == '-') {
+                status = 5;
+            }
+            else {
+                status = 0;
+                APP;
+            }
+            break;
+        case 5:
+            if (c == ']') {
+                status = 3;
+            }
+            else {
+                status = 0;
+                APP;
+            }
+            break;
+        default:
+            assert(0);
+        }
+    }
+#undef APP
+    return ret;
 }
 
 void output(char c) {
@@ -902,6 +985,10 @@ void var::output_as_integer() {
     }
     print_times('<', cur_var_num + 1);
     cur_var_num = old_var_num;
+}
+
+void output_as_integer(var v) {
+    v.output_as_integer();
 }
 
 void mem_reset() {

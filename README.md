@@ -9,11 +9,12 @@ Describe your brainfuck program using C++.
 - 八位整型运算 `+`、`-`、`*`、`/`
 - 八位整型大小比较
 - 运算符重载
-- 数组，能通过变量访问数组
+- 数组 `vararray`，能通过 `var` 变量访问数组
 
 Not implemented yet:
 - (condition).while_begin();
 - else_beign(), else_end();
+- nested while (buggy)
 
 
 #### How to use
@@ -107,7 +108,24 @@ x.while_begin();   // while(!x)
 x.while_end();
 ```
 
-**Do not use `(condition).while_begin()` because the value of `condition` will only be computed once and will not change during loop**
+**Do not use `(condition).while_begin()` because the value of `condition` will only be computed once and will not change during loop**      
+**Do not use nested while (not implemented)**      
+
+loop, print 0, 1, 2, ..., 99.
+```cpp
+foreach(i, 0, 100);
+    i.output_as_integer();
+    output(' ');
+endfor(i, 0, 100);
+```
+
+loop, print 100, 101, 102, ..., 254, 255, 0, 1, ..., 9.
+```cpp
+foreach(i, 100, 10);
+    i.output_as_integer();
+    output(' ');
+endfor(i, 100, 10);
+```
 
 #### 基本运算
 ```cpp
@@ -195,9 +213,12 @@ for (var &v : result) {
 ```cpp
 // hello world
 var v1('h'), v2('e'), v3('l'), v4('o'), v5(' '), v6('w'), v7('r'), v8('d');
-v1.output();v2.output();v3.output();v3.output();
-v4.output();v5.output();v6.output();v4.output();
-v7.output();v3.output();v8.output();
+v1.output();v2.output();v3.output();v3.output();v4.output();v5.output();
+v6.output();v4.output();v7.output();v3.output();v8.output();
+```
+
+```cpp
+output('h');output('e');output('l');output('l');output('o');
 ```
 
 ```cpp
@@ -218,13 +239,13 @@ print_str("hello world\n");
 unlike `var[]` where index can only be `int`.
 
 ```cpp
-vararray L(10);     // create an array with length 10
+vararray L(10);                 // create an array with length 10
 
 for (int i = 0; i < 10; i++) {
     L[i] = 9 - i;
 }
 
-L.output();         // [9,8,7,6,5,4,3,2,1,0]
+L.output();                     // [9,8,7,6,5,4,3,2,1,0]
 
 var index;
 index.input_as_integer();       // index starts from 0
@@ -254,7 +275,9 @@ for (int i = 0; i < 10; i++) {
 }
 ```
 
-Sort with vararray:
+Sort with vararray:      
+input: 44 54 23 8 19 108       
+output: \[8,19,23,44,54,108\]      
 
 ```cpp
 vararray L(6);
