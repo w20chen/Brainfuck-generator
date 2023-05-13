@@ -734,7 +734,7 @@ void output(char c) {
     cur_var_num--;
 }
 
-void print_str(const char *str) {
+static void __print_str(const char *str) {
     size_t l = strlen(str);
     int start_index = cur_var_num + 1;
     int end_index = cur_var_num + l;
@@ -756,6 +756,20 @@ void print_str(const char *str) {
     print_times('<', start_index);
     delete[] arr;
     cur_var_num -= l;
+}
+
+void print_str(const char *str) {
+    const static int M = 10;
+    int l = strlen(str);
+    if (l <= M) {
+        __print_str(str);
+        return;
+    }
+    char __head[M + 1];
+    memset(__head, 0, sizeof(__head));
+    strncpy(__head, str, M);
+    __print_str(__head);
+    print_str(str + M);
 }
 
 var &var::operator<=(const uint8_t d) {
