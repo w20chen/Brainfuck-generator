@@ -25,6 +25,12 @@ var::var(int8_t d) {
     this->pool_index = cur_var_num + 1;
     cur_var_num++;
 
+    /* clear to avoid reallocation in nested while loop */
+    print_times('>', this->pool_index);
+    printf("[-]");
+    print_times('<', this->pool_index);
+    /* end of clear */
+
     int inner_increment = 0;
 
     if (d > 8 && this->pool_index <= 16) {
@@ -57,6 +63,7 @@ var::var(int8_t d) {
 var::var(const var &another, bool shadow) {
 
     if (shadow) {
+        // only create a shadow, no memory allocated
         this->pool_index = another.pool_index;
         return;
     }
@@ -67,8 +74,12 @@ var::var(const var &another, bool shadow) {
     this->pool_index = cur_var_num + 1;
     cur_var_num++;
 
+    print_times('>', this->pool_index);
+    printf("[-]");
+    print_times('<', this->pool_index);
+
     // copy needs a cpp reference
-    // create a shadow var
+    // create a shadow of `another'
     var shad = var(another, true);
     this->copy(shad);  // this->data = another->data
 }
@@ -306,7 +317,7 @@ void var::to_bool() {
 
     tmp.clear();
     cur_var_num -= 3;
-    // destroy tmp ans 2 if-flags
+    // destroy tmp and 2 if-flags
 }
 
 void var::if_begin() {
@@ -336,6 +347,7 @@ void var::if_begin_zero() {
 void var::if_end() {
     assert(!if_flag_stack.empty());
     var *flag = if_flag_stack.top();
+    assert(flag != nullptr);
     if_flag_stack.pop();
 
     flag->while_end();
@@ -349,6 +361,7 @@ void var::if_end() {
 void if_end() {
     assert(!if_flag_stack.empty());
     var *flag = if_flag_stack.top();
+    assert(flag != nullptr);
     if_flag_stack.pop();
     flag->while_end();
     delete flag;

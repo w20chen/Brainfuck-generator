@@ -5,6 +5,7 @@ Describe your brainfuck program using C++.
 已经实现：
 
 - `while(!x)` 语句
+- nested while loop
 - `if(condition)` 语句
 - 八位整型运算 `+`、`-`、`*`、`/`
 - 八位整型大小比较
@@ -14,7 +15,7 @@ Describe your brainfuck program using C++.
 Not implemented yet:
 - (condition).while_begin();
 - else_beign(), else_end();
-- nested while (buggy ??? )
+- nested if condition (buggy???)
 
 
 ## How to use
@@ -108,8 +109,7 @@ x.while_begin();   // while(!x)
 x.while_end();
 ```
 
-**Do not use `(condition).while_begin()` because the value of `condition` will only be computed once and will not change during loop**      
-**Do not use nested while (not implemented)**      
+**Do not use `(condition).while_begin()` because the value of `condition` will only be computed once and will not change during loop**        
 
 loop, print 0, 1, 2, ..., 99.
 ```cpp
@@ -126,6 +126,37 @@ foreach(i, 100, 10);
     output(' ');
 endfor(i, 100, 10);
 ```
+
+loop, print (1,1) (1,2) ... (9,9)
+```cpp
+foreach(i, 1, 10);
+    foreach(j, 1, 10);
+        output_as_integer(i);
+        output(',');
+        output_as_integer(j);
+        output('\n');
+    endfor(j, 1, 10);
+endfor(i, 1, 10);
+```
+
+Compute all prime numbers between 2 to 100.
+```cpp
+print_str("2 ");
+foreach(i, 3, 100);
+var flag = 1;
+foreach(j, 2, i);
+(i % j == 0).if_begin();
+flag = 0;
+if_end();
+endfor(j, 2, i);
+flag.if_begin();
+i.output_as_integer();
+output(' ');
+flag.if_end();
+endfor(i, 3, 100);
+output('\n');
+```
+<img src="./examples/prime.png" width=300 />
 
 ## 基本运算
 ```cpp
