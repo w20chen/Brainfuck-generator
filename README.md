@@ -1,4 +1,4 @@
-#### Brainfuck generator
+## Brainfuck generator
 
 Describe your brainfuck program using C++.
 
@@ -14,15 +14,15 @@ Describe your brainfuck program using C++.
 Not implemented yet:
 - (condition).while_begin();
 - else_beign(), else_end();
-- nested while (buggy)
+- nested while (buggy ??? )
 
 
-#### How to use
+## How to use
 
 Implement your C++ code in text.cpp, then `bash run.sh` to compile and run.     
 Brainfuck code will be generated in `out.bf`.
 
-#### var 类型
+## var 类型
 **var 对象在调用构造函数时，会在 BF 机器内存中自动申请空间，且不会从 BF 内存中释放。**     
 `var` 类型本质上是 `uint8_t`，也可以被理解为 `char` 或 `int8_t`。下面是一个例子。       
 
@@ -36,7 +36,7 @@ i2.greater(i1, ret);        // ret <- (i2 > i1)
 ret.output_digit2char();
 ```
 
-#### 输入输出
+## 输入输出
 ```cpp
 var a;
 a.input_as_integer();   // 作为 uint8_t 读入
@@ -46,7 +46,7 @@ a.input();              // 作为 char 读入
 a.output();             // 作为 char 输出
 ```
 
-#### if 语句
+## if 语句
 若 `a - b == 1`，则输出 'Y'；否则输出 'N'。
 ```cpp
 var a, b;
@@ -95,7 +95,7 @@ if_end();
 ```
 
 
-#### while 语句
+## while 语句
 
 输出 `x` 个字符 `'5'`
 ```cpp
@@ -127,7 +127,7 @@ foreach(i, 100, 10);
 endfor(i, 100, 10);
 ```
 
-#### 基本运算
+## 基本运算
 ```cpp
 var a, b, ret;
 a.input_as_integer();
@@ -143,7 +143,7 @@ x.input_as_integer();
 (x * 2 + 3).output_as_integer();
 ```
 
-#### 运算符重载
+## 运算符重载
 注意：调用运算符函数的同时会创建**不可被回收的中间变量**     
 
 等号
@@ -209,7 +209,7 @@ for (var &v : result) {
 // 1111001
 ```
 
-#### 字符打印
+## 字符打印
 ```cpp
 // hello world
 var v1('h'), v2('e'), v3('l'), v4('o'), v5(' '), v6('w'), v7('r'), v8('d');
@@ -233,7 +233,7 @@ for (char c : s) {
 print_str("hello world\n");
 ```
 
-#### vararray
+## vararray
 
 `vararray` is an array of vars where the element can be accessed by index with dtype `var`,      
 unlike `var[]` where index can only be `int`.
@@ -252,7 +252,7 @@ index.input_as_integer();       // index starts from 0
 L.val(index).output_as_integer();
 ```
 
-#### 排序
+## sort
 输入10个 int，输出排序后的10个 int。     
 这里，数组的意义在于批量地实例化 `var` 对象。
 ```cpp
